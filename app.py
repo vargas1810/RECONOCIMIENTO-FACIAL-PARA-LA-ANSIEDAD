@@ -52,6 +52,8 @@ def upload_video():
         # Guarda el archivo de video temporalmente
         video_file = request.files['video']
         videopath = os.path.join("uploads", video_file.filename)
+        # Agrega un print para verificar la ruta
+        print(f"Guardando video en: {videopath}")  # Agregar esta línea
         video_file.save(videopath)
 
         # Detección de emociones en el video
