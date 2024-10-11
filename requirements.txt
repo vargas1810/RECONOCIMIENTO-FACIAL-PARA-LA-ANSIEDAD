@@ -50,7 +50,7 @@ pandas==2.2.3
 pillow==10.2.0
 proglog==0.1.10
 protobuf==4.25.5
-psycopg2==2.9.9
+psycopg2-binary
 Pygments==2.18.0
 pyparsing==3.1.4
 python-dateutil==2.9.0.post0
@@ -76,3 +76,4 @@ urllib3==2.2.3
 Werkzeug==3.0.4
 wrapt==1.16.0
 gunicorn
+
