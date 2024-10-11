@@ -1,7 +1,15 @@
-venv/
-.venv/
-output/
+# Ignorar archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar archivos de base de datos
+*.db
+*.sqlite3
+
+# Ignorar carpetas de subida
 uploads/
-*.png
-*.csv
-.vscode/
+
+# Ignorar archivos de entorno
+.env
