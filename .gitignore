@@ -8,8 +8,7 @@ __pycache__/
 *.db
 *.sqlite3
 
-# Ignorar carpetas de subida
-uploads/
+
 
 # Ignorar archivos de entorno
 .env
