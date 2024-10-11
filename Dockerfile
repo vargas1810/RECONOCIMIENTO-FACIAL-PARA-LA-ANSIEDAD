@@ -14,6 +14,9 @@ WORKDIR /app
 # Copia los archivos de tu proyecto al contenedor
 COPY . .
 
+# Crea el directorio de uploads
+RUN mkdir -p uploads
+
 # Instala las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
