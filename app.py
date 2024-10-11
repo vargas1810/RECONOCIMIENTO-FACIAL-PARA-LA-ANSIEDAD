@@ -1,4 +1,6 @@
+from datetime import datetime
 from flask import Flask, request, jsonify, send_file
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import pandas as pd
 from fer import Video, FER
@@ -12,6 +14,28 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 # Inicializa la aplicación Flask
 app = Flask(__name__)
 CORS(app)
+
+# Configuración de la base de datos
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sysvita:j6tkmExB0Xes9z30gNiU6Ie39yEaDRGd@dpg-cs3bc8pu0jms73987300-a.oregon-postgres.render.com/g1_sysvita'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Modelo de base de datos
+class Resultados(db.Model):
+    __tablename__ = 'resultados'
+    id_resultado = db.Column(db.Integer, primary_key=True)
+    enviado_tiempo = db.Column(db.DateTime, default=datetime.utcnow)
+    angry = db.Column(db.Numeric, nullable=False)
+    disgust = db.Column(db.Numeric, nullable=False)
+    fear = db.Column(db.Numeric, nullable=False)
+    happy = db.Column(db.Numeric, nullable=False)
+    sad = db.Column(db.Numeric, nullable=False)
+    surprise = db.Column(db.Numeric, nullable=False)
+    neutral = db.Column(db.Numeric, nullable=False)
+    emocion = db.Column(db.String(20), nullable=False)
+
+    def __repr__(self):
+        return f"<Resultado {self.id_resultado} - {self.emocion}>"
 
 # Verifica si la GPU está disponible
 device_name = tf.test.gpu_device_name()
@@ -61,6 +85,20 @@ def upload_video():
 
         # Elimina el archivo de video temporal
         os.remove(videopath)
+
+        # Guardar resultados en la base de datos
+        resultado = Resultados(
+            angry=emotions_avg['angry'],
+            disgust=emotions_avg['disgust'],
+            fear=emotions_avg['fear'],
+            happy=emotions_avg['happy'],
+            sad=emotions_avg['sad'],
+            surprise=emotions_avg['surprise'],
+            neutral=emotions_avg['neutral'],
+            emocion=predominant_emotion
+        )
+        db.session.add(resultado)
+        db.session.commit()
 
         # Devolver los resultados con el estado de ánimo predominante
         response = {

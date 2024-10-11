@@ -1,5 +1,7 @@
 venv/
+.venv/
 output/
 uploads/
 *.png
 *.csv
+.vscode/
